@@ -10,4 +10,6 @@ public interface UserService {
 
 	public ResponseEntity<ResponseStructure<UserResponse>> registerUser(UserRequest userRequest);
 
+	public ResponseEntity<ResponseStructure<UserResponse>> findByUserId(int userId);
+
 }

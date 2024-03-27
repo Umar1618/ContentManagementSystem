@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.jsp.ContentManagementSystem.exception.UserAlreadyExistByEmailException;
+import com.jsp.ContentManagementSystem.exception.UserNotFoundByIdException;
 import com.jsp.ContentManagementSystem.model.User;
 import com.jsp.ContentManagementSystem.repository.UserRepository;
 import com.jsp.ContentManagementSystem.requestdto.UserRequest;
@@ -37,14 +38,6 @@ public class UserServiceImpl implements UserService {
 				.setBody(mapToUserResponse(user)));
 	}
 	
-//	private UserResponse mapToUserResponse(User user) {
-//		return UserResponse.builder()
-//				.userId(user.getUserId())
-//				.username(user.getUsername())
-//				.email(user.getEmail())
-//				.build();
-//	}
-	
 	private UserResponse mapToUserResponse(User user) {
 	    return new UserResponse(user.getUserId(), 
 	    		user.getUsername(),
@@ -58,5 +51,12 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 		user.setUsername(userRequest.getUsername());
 		return user;
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<UserResponse>> findByUserId(int userId) {
+		return userRepository.findById(userId).map(user -> ResponseEntity.ok(structure.setStatus(HttpStatus.OK.value())
+				.setMessage("User found successfully")
+				.setBody(mapToUserResponse(user)))).orElseThrow(()-> new UserNotFoundByIdException("User Not found"));
 	}
 }
