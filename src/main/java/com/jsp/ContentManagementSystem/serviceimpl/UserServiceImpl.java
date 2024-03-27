@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.jsp.ContentManagementSystem.exception.UserAlreadyExistByEmailException;
+import com.jsp.ContentManagementSystem.exception.UserNotFoundByIdException;
 import com.jsp.ContentManagementSystem.model.User;
 import com.jsp.ContentManagementSystem.repository.UserRepository;
 import com.jsp.ContentManagementSystem.requestdto.UserRequest;
@@ -57,6 +58,19 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(userRequest.getEmail());
 		user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 		user.setUsername(userRequest.getUsername());
+		user.setDeleted(false);
 		return user;
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<UserResponse>> deleteUser(int userId) {
+		return userRepository.findById(userId).map(user -> {
+			user.setDeleted(true);
+			userRepository.save(user);
+			return ResponseEntity.ok(structure.setStatus(HttpStatus.OK.value())
+					.setMessage("User Deleted Temporaryly")
+					.setBody(mapToUserResponse(user))
+					);})
+		.orElseThrow(()-> new UserNotFoundByIdException("User Not Found"));
 	}
 }
