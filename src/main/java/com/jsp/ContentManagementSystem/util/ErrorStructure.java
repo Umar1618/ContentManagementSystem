@@ -3,11 +3,11 @@ package com.jsp.ContentManagementSystem.util;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ResponseStructure<T> {
+public class ErrorStructure<T> {
 	
 	private int status;
 	private String message;
-	private T body;
+	private T rootCause;
 	
 	public int getStatus() {
 		return status;
@@ -17,22 +17,22 @@ public class ResponseStructure<T> {
 		return message;
 	}
 
-	public T getBody() {
-		return body;
+	public T getRootCause() {
+		return rootCause;
 	}
 
-	public ResponseStructure<T> setStatus(int status){
+	public ErrorStructure<T> setStatus(int status){
 		this.status = status;
 		return this;
 	}
 	
-	public ResponseStructure<T> setMessage(String message){
+	public ErrorStructure<T> setMessage(String message){
 		this.message = message;
 		return this;
 	}
 	
-	public ResponseStructure<T> setBody(T body){
-		this.body = body;
+	public ErrorStructure<T> setRootCause(T rootCause){
+		this.rootCause = rootCause;
 		return this;
 	}
 
