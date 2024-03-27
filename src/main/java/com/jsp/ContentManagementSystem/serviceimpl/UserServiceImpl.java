@@ -50,13 +50,26 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(userRequest.getEmail());
 		user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 		user.setUsername(userRequest.getUsername());
+		user.setDeleted(false);
 		return user;
 	}
 
 	@Override
+
 	public ResponseEntity<ResponseStructure<UserResponse>> findByUserId(int userId) {
 		return userRepository.findById(userId).map(user -> ResponseEntity.ok(structure.setStatus(HttpStatus.OK.value())
 				.setMessage("User found successfully")
 				.setBody(mapToUserResponse(user)))).orElseThrow(()-> new UserNotFoundByIdException("User Not found"));
+  }
+	public ResponseEntity<ResponseStructure<UserResponse>> deleteUser(int userId) {
+		return userRepository.findById(userId).map(user -> {
+			user.setDeleted(true);
+			userRepository.save(user);
+			return ResponseEntity.ok(structure.setStatus(HttpStatus.OK.value())
+					.setMessage("User Deleted Temporaryly")
+					.setBody(mapToUserResponse(user))
+					);})
+		.orElseThrow(()-> new UserNotFoundByIdException("User Not Found"));
+
 	}
 }

@@ -2,7 +2,7 @@ package com.jsp.ContentManagementSystem.exception;
 
 @SuppressWarnings("serial")
 public class UserNotFoundByIdException extends RuntimeException {
-	
+
 	private String message;
 
 	public String getMessage() {
@@ -12,5 +12,4 @@ public class UserNotFoundByIdException extends RuntimeException {
 	public UserNotFoundByIdException(String message) {
 		this.message = message;
 	}
-
 }

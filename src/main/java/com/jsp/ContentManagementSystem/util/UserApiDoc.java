@@ -33,4 +33,5 @@ public class UserApiDoc {
 	OpenAPI openAPI() {
 		return new OpenAPI().info(info());
 	}
+
 }

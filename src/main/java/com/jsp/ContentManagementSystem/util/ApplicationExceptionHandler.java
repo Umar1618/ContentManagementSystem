@@ -37,7 +37,9 @@ public class ApplicationExceptionHandler {
 	public ResponseEntity<ErrorStructure<String>> handleUserNotFoundById(
 			UserNotFoundByIdException e){
 		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), 
+
 				"User not exists with the given Id");
+
 	}
 
 }
