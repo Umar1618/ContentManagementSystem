@@ -1,7 +1,7 @@
 package com.jsp.ContentManagementSystem.exception;
 
 @SuppressWarnings("serial")
-public class UserNotFoundByIdException extends RuntimeException{
+public class UserNotFoundByIdException extends RuntimeException {
 
 	private String message;
 

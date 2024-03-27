@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jsp.ContentManagementSystem.requestdto.UserRequest;
 import com.jsp.ContentManagementSystem.responsedto.UserResponse;
 import com.jsp.ContentManagementSystem.service.UserService;
+import com.jsp.ContentManagementSystem.util.ErrorStructure;
 import com.jsp.ContentManagementSystem.util.ResponseStructure;
 
 import io.swagger.v3.oas.annotations.Operation;
+
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
@@ -46,5 +50,15 @@ public class UserController {
 	@GetMapping("/test")
 	public String test() {
 		return "Hello from cms";
+	}
+	@Operation(description = "This endpoint will fetch user from the database based on id", responses = {
+			@ApiResponse(responseCode = "200", description = "User found successfully"),
+			@ApiResponse(responseCode = "404", description = "User not exist by the given id", content = {
+					@Content(schema = @Schema(implementation = ErrorStructure.class))	
+			})
+	})
+	@GetMapping("users/{userId}")
+	public ResponseEntity<ResponseStructure<UserResponse>> findByUserId(@PathVariable int userId){
+		return userService.findByUserId(userId);
 	}
 }
