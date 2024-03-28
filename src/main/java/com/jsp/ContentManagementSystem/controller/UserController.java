@@ -46,11 +46,7 @@ public class UserController {
 	public ResponseEntity<ResponseStructure<UserResponse>> deleteUser(@PathVariable int userId){
 		return userService.deleteUser(userId);
 	}
-	
-	@GetMapping("/test")
-	public String test() {
-		return "Hello from cms";
-	}
+
 	@Operation(description = "This endpoint will fetch user from the database based on id", responses = {
 			@ApiResponse(responseCode = "200", description = "User found successfully"),
 			@ApiResponse(responseCode = "404", description = "User not exist by the given id", content = {

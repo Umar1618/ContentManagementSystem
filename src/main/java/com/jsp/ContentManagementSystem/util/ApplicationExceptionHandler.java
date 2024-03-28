@@ -5,6 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.jsp.ContentManagementSystem.exception.TitleAlphabetsOnlyException;
+import com.jsp.ContentManagementSystem.exception.TitleAlreadyExistsException;
+import com.jsp.ContentManagementSystem.exception.TopicsNotSpecifiedException;
 import com.jsp.ContentManagementSystem.exception.UserAlreadyExistByEmailException;
 import com.jsp.ContentManagementSystem.exception.UserNotFoundByIdException;
 
@@ -37,9 +40,27 @@ public class ApplicationExceptionHandler {
 	public ResponseEntity<ErrorStructure<String>> handleUserNotFoundById(
 			UserNotFoundByIdException e){
 		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), 
-
 				"User not exists with the given Id");
-
 	}
 
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleTitleAlphabetsOnly(
+			TitleAlphabetsOnlyException e){
+		return errorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), 
+				"Title should only contain alphabets");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleTitleAlreadyExists(
+			TitleAlreadyExistsException e){
+		return errorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), 
+				"The title should be unique");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleTopicsNotSpecified(
+			TopicsNotSpecifiedException e){
+		return errorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), 
+				"At list one topic has to be specified");
+	}
 }

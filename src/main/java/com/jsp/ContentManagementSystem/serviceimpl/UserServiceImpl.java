@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-
 	public ResponseEntity<ResponseStructure<UserResponse>> findByUserId(int userId) {
 		return userRepository.findById(userId).map(user -> ResponseEntity.ok(structure.setStatus(HttpStatus.OK.value())
 				.setMessage("User found successfully")
