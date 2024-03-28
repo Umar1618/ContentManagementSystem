@@ -30,15 +30,7 @@ public class BlogServiceImpl implements BlogService{
 	@Override
 	public ResponseEntity<ResponseStructure<BlogResponse>> createBlog(int userId, BlogRequest blogRequest) {
 		return userRepository.findById(userId).map(user -> {
-			if(!blogRequest.getTitle().matches("[a-zA-Z ]+") || blogRequest.getTitle()==null)
-				throw new TitleAlphabetsOnlyException("Faild to create blog");
-				
-			if(blogRepository.existsByTitle(blogRequest.getTitle()))
-				throw new TitleAlreadyExistsException("Faild to create blog");
-			
-			if(blogRequest.getTopics().length<1)
-				throw new TopicsNotSpecifiedException("Faild to create blog");
-			
+			validateBlogRequest(blogRequest);
 			Blog blog = mapToBlogEntity(blogRequest, new Blog());
 			blog.getUsers().add(user);
 			blog = blogRepository.save(blog);
@@ -64,6 +56,17 @@ public class BlogServiceImpl implements BlogService{
 			blog.getAbout()
 		);
 	}
+	
+	private void validateBlogRequest(BlogRequest blogRequest) {
+		if(!blogRequest.getTitle().matches("[a-zA-Z ]+") || blogRequest.getTitle()==null)
+			throw new TitleAlphabetsOnlyException("Faild to update blog");
+			
+		if(blogRepository.existsByTitle(blogRequest.getTitle()))
+			throw new TitleAlreadyExistsException("Faild to update blog");
+		
+		if(blogRequest.getTopics().length<1)
+			throw new TopicsNotSpecifiedException("Faild to update blog");
+	}
 
 	@Override
 	public ResponseEntity<ResponseStructure<Boolean>> checkForBlog(String title) {
@@ -83,5 +86,17 @@ public class BlogServiceImpl implements BlogService{
 				.setBody(mapToBlogResponse(blog))
 			);
 		}).orElseThrow(()->new BlogNotFoundByIdException("Blog not Found"));
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<BlogResponse>> updateBlog(int blogId, BlogRequest blogRequest) {
+		return blogRepository.findById(blogId).map(blog -> {
+			validateBlogRequest(blogRequest);
+			blog = blogRepository.save(mapToBlogEntity(blogRequest, blog));
+			return ResponseEntity.ok(responseStructure
+					.setStatus(HttpStatus.OK.value())
+					.setMessage("Blog updated successfully")
+					.setBody(mapToBlogResponse(blog)));
+		}).orElseThrow(()-> new BlogNotFoundByIdException("Faild to update blog"));
 	}
 }
