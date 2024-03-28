@@ -58,17 +58,30 @@ public class BlogServiceImpl implements BlogService{
 
 	private BlogResponse mapToBlogResponse(Blog blog) {
 		return new BlogResponse(
-				blog.getBlogId(),
-				blog.getTitle(),
-				blog.getTopics(),
-				blog.getAbout());
+			blog.getBlogId(),
+			blog.getTitle(),
+			blog.getTopics(),
+			blog.getAbout()
+		);
 	}
 
 	@Override
 	public ResponseEntity<ResponseStructure<Boolean>> checkForBlog(String title) {
 		return ResponseEntity.ok(new ResponseStructure<Boolean>()
-				.setStatus(HttpStatus.OK.value())
-				.setMessage("Blog title details fetched successfully")
-				.setBody(blogRepository.existsByTitle(title)));
+			.setStatus(HttpStatus.OK.value())
+			.setMessage("Blog title details fetched successfully")
+			.setBody(blogRepository.existsByTitle(title))
+		);
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<BlogResponse>> findByBlogId(int blogId) {
+		return blogRepository.findById(blogId).map(blog -> {
+			return ResponseEntity.ok(responseStructure
+				.setStatus(HttpStatus.FOUND.value())
+				.setMessage("Blog found successfully")
+				.setBody(mapToBlogResponse(blog))
+			);
+		}).orElseThrow(()->new BlogNotFoundByIdException("Blog not Found"));
 	}
 }

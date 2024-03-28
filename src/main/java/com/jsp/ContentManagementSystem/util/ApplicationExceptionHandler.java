@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.jsp.ContentManagementSystem.exception.BlogNotFoundByIdException;
 import com.jsp.ContentManagementSystem.exception.TitleAlphabetsOnlyException;
 import com.jsp.ContentManagementSystem.exception.TitleAlreadyExistsException;
 import com.jsp.ContentManagementSystem.exception.TopicsNotSpecifiedException;
@@ -62,5 +63,12 @@ public class ApplicationExceptionHandler {
 			TopicsNotSpecifiedException e){
 		return errorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), 
 				"At list one topic has to be specified");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleBlogNotFoundById(
+			BlogNotFoundByIdException e){
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), 
+				"Blog not exists with the given Id");
 	}
 }
