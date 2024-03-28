@@ -1,10 +1,7 @@
 package com.jsp.ContentManagementSystem.requestdto;
 
-import jakarta.validation.constraints.NotNull;
-
 public class BlogRequest {
 	
-	@NotNull
 	private String title;
 	private String[] topics;
 	private String about;
