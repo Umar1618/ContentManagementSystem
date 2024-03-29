@@ -85,11 +85,4 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-//	public void addBlog(Blog blog) {
-//        if (blogs == null) {
-//            blogs = new ArrayList<>();
-//        }
-//        blogs.add(blog);
-//    }
 }

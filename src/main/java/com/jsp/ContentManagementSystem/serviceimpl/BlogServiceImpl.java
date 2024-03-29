@@ -1,14 +1,14 @@
 package com.jsp.ContentManagementSystem.serviceimpl;
 
-import java.util.Arrays;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.jsp.ContentManagementSystem.exception.*;
 import com.jsp.ContentManagementSystem.model.Blog;
+import com.jsp.ContentManagementSystem.model.ContributionPanel;
 import com.jsp.ContentManagementSystem.repository.BlogRepository;
+import com.jsp.ContentManagementSystem.repository.ContributionPanelRepository;
 import com.jsp.ContentManagementSystem.repository.UserRepository;
 import com.jsp.ContentManagementSystem.requestdto.BlogRequest;
 import com.jsp.ContentManagementSystem.responsedto.BlogResponse;
@@ -20,13 +20,15 @@ public class BlogServiceImpl implements BlogService{
 	
 	private UserRepository userRepository;
 	private BlogRepository blogRepository;
+	private ContributionPanelRepository contributionPanelRepository;
 	private ResponseStructure<BlogResponse> responseStructure;
 
 	public BlogServiceImpl(UserRepository userRepository, BlogRepository blogRepository,
-			ResponseStructure<BlogResponse> responseStructure) {
+			ResponseStructure<BlogResponse> responseStructure, ContributionPanelRepository contributionPanelRepository) {
 		this.userRepository = userRepository;
 		this.blogRepository = blogRepository;
 		this.responseStructure = responseStructure;
+		this.contributionPanelRepository = contributionPanelRepository;
 	}
 
 	@Override
@@ -34,7 +36,9 @@ public class BlogServiceImpl implements BlogService{
 		return userRepository.findById(userId).map(user -> {
 			validateBlogRequest(blogRequest);
 			Blog blog = mapToBlogEntity(blogRequest, new Blog());
+			ContributionPanel contributionPanel = contributionPanelRepository.save(new ContributionPanel());
 			blog.setUser(user);
+			blog.setContributionPanel(contributionPanel);
 			blogRepository.save(blog);
 			return ResponseEntity.ok(responseStructure
 					.setStatus(HttpStatus.OK.value())
