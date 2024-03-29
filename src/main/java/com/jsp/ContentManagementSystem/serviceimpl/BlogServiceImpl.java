@@ -1,5 +1,7 @@
 package com.jsp.ContentManagementSystem.serviceimpl;
 
+import java.util.Arrays;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,8 +34,8 @@ public class BlogServiceImpl implements BlogService{
 		return userRepository.findById(userId).map(user -> {
 			validateBlogRequest(blogRequest);
 			Blog blog = mapToBlogEntity(blogRequest, new Blog());
-			blog.getUsers().add(user);
-			blog = blogRepository.save(blog);
+			blog.setUser(user);
+			blogRepository.save(blog);
 			return ResponseEntity.ok(responseStructure
 					.setStatus(HttpStatus.OK.value())
 					.setMessage("Blog created successfully")
