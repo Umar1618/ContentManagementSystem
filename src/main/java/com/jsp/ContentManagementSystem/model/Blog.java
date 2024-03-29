@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -21,7 +22,15 @@ public class Blog {
 	private String about;
 	@ManyToOne
 	private User user;
+	@OneToOne
+	private ContributionPanel contributionPanel;
 	
+	public ContributionPanel getContributionPanel() {
+		return contributionPanel;
+	}
+	public void setContributionPanel(ContributionPanel contributionPanel) {
+		this.contributionPanel = contributionPanel;
+	}
 	public User getUser() {
 		return user;
 	}
