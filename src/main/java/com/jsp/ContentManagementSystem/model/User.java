@@ -1,6 +1,8 @@
 package com.jsp.ContentManagementSystem.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -12,6 +14,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,7 +34,15 @@ public class User {
 	@LastModifiedDate
 	private LocalDateTime lastModifiedAt;
 	private boolean deleted;
+	@OneToMany(mappedBy = "user")
+	private List<Blog> blogs = new ArrayList<Blog>();
 	
+	public List<Blog> getBlogs() {
+		return blogs;
+	}
+	public void setBlogs(List<Blog> blogs) {
+		this.blogs = blogs;
+	}
 	public boolean isDeleted() {
 		return deleted;
 	}
@@ -74,4 +85,11 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+//	public void addBlog(Blog blog) {
+//        if (blogs == null) {
+//            blogs = new ArrayList<>();
+//        }
+//        blogs.add(blog);
+//    }
 }

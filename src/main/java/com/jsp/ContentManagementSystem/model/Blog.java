@@ -1,8 +1,5 @@
 package com.jsp.ContentManagementSystem.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Entity;
@@ -10,7 +7,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -22,14 +19,14 @@ public class Blog {
 	private String title;
 	private String[] topics;
 	private String about;
-	@ManyToMany
-	private List<User> users = new ArrayList<User>();
+	@ManyToOne
+	private User user;
 	
-	public List<User> getUsers() {
-		return users;
+	public User getUser() {
+		return user;
 	}
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setUser(User user) {
+		this.user = user;
 	}
 	public int getBlogId() {
 		return blogId;
