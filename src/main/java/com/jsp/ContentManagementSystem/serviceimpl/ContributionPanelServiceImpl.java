@@ -36,14 +36,15 @@ public class ContributionPanelServiceImpl implements ContributionPanelService {
 	@Override
 	public ResponseEntity<ResponseStructure<ContributionPanelResponse>> addContributor(int userId, int panelId) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		System.out.println(email);
 		return userRepository.findByEmail(email).map(owner -> {
 			return contributionPanelRepository.findById(panelId).map(panel -> {
 				if(!blogRepository.existsByUserAndContributionPanel(owner, panel))
 					throw new IllegalAccessRequestException("Failed to add Contributor");
 				return userRepository.findById(userId).map(conributor -> {
-					panel.getUsers().add(conributor);
-					contributionPanelRepository.save(panel);
+					if(!panel.getUsers().contains(conributor)){
+						panel.getUsers().add(conributor);
+						contributionPanelRepository.save(panel);
+					}
 					return ResponseEntity.ok(responseStructure
 							.setStatus(HttpStatus.OK.value())
 							.setMessage("Contributor added successfully")
@@ -55,6 +56,25 @@ public class ContributionPanelServiceImpl implements ContributionPanelService {
 
 	private ContributionPanelResponse mapToContributionPanelResponse(ContributionPanel panel) {
 		return new ContributionPanelResponse(panel.getPanelId(), panel.getUsers());
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<ContributionPanelResponse>> removeContributor(int userId, int panelId) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		return userRepository.findByEmail(email).map(owner -> {
+			return contributionPanelRepository.findById(panelId).map(panel -> {
+				if(!blogRepository.existsByUserAndContributionPanel(owner, panel))
+					throw new IllegalAccessRequestException("Failed to remove Contributor");
+				return userRepository.findById(userId).map(conributor -> {
+					panel.getUsers().remove(conributor);
+					contributionPanelRepository.save(panel);
+					return ResponseEntity.ok(responseStructure
+							.setStatus(HttpStatus.OK.value())
+							.setMessage("Contributor removed successfully")
+							.setBody(mapToContributionPanelResponse(panel)));
+				}).orElseThrow(()-> new UserNotFoundByIdException("Failed to remove Contributor"));
+			}).orElseThrow(()-> new ContributionPanelNotFoundByIdException("Failed to remove Contributor"));
+		}).get();
 	}
 
 }
