@@ -20,7 +20,7 @@ public class ContributionPanel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int panelId;
 	@ManyToMany
-	private List<User> users = new ArrayList<User>();
+	private List<User> contributors = new ArrayList<User>();
 	
 	public int getPanelId() {
 		return panelId;
@@ -29,9 +29,9 @@ public class ContributionPanel {
 		this.panelId = panelId;
 	}
 	public List<User> getUsers() {
-		return users;
+		return contributors;
 	}
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setUsers(List<User> contributors) {
+		this.contributors = contributors;
 	}
 }
