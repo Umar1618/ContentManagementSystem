@@ -1,5 +1,8 @@
 package com.jsp.ContentManagementSystem.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Entity;
@@ -8,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -24,7 +28,15 @@ public class Blog {
 	private User user;
 	@OneToOne
 	private ContributionPanel contributionPanel;
+	@OneToMany(mappedBy = "blog")
+	private List<BlogPost> blogPosts = new ArrayList<BlogPost>();
 	
+	public List<BlogPost> getBlogPosts() {
+		return blogPosts;
+	}
+	public void setBlogPosts(List<BlogPost> blogPosts) {
+		this.blogPosts = blogPosts;
+	}
 	public ContributionPanel getContributionPanel() {
 		return contributionPanel;
 	}
