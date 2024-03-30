@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.jsp.ContentManagementSystem.exception.BlogNotFoundByIdException;
+import com.jsp.ContentManagementSystem.exception.ContributionPanelNotFoundByIdException;
+import com.jsp.ContentManagementSystem.exception.IllegalAccessRequestException;
 import com.jsp.ContentManagementSystem.exception.TitleAlphabetsOnlyException;
 import com.jsp.ContentManagementSystem.exception.TitleAlreadyExistsException;
 import com.jsp.ContentManagementSystem.exception.TopicsNotSpecifiedException;
@@ -70,5 +72,19 @@ public class ApplicationExceptionHandler {
 			BlogNotFoundByIdException e){
 		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), 
 				"Blog not exists with the given Id");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleIllegalAccessRequest(
+			IllegalAccessRequestException e){
+		return errorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), 
+				"User not allowed to Access");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleContributionPanelNotFoundById(
+			ContributionPanelNotFoundByIdException e){
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), 
+				"Contribution Panel not exists with the given Id");
 	}
 }
