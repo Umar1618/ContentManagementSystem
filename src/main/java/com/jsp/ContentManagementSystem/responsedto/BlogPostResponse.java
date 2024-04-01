@@ -1,54 +1,43 @@
-package com.jsp.ContentManagementSystem.model;
+package com.jsp.ContentManagementSystem.responsedto;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import com.jsp.ContentManagementSystem.enums.PostType;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+public class BlogPostResponse {
 
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-public class BlogPost {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int blogPostId;
-	@NotNull
 	private String title;
 	private String subTitle;
-	@Size(min = 500, max = 2000)
 	private String summary;
 	private PostType postType;
 	private String seoTitle;
 	private String seoDescription;
 	private String[] seoTopics;
-	@ManyToOne
-	private Blog blog;
-	@CreatedBy
-	@Column(updatable = false)
 	private String createdBy;
-	@CreatedDate
-	@Column(updatable = false)
 	private LocalDateTime createAt;
-	@LastModifiedBy
 	private String lastModifiedBy;
-	@LastModifiedDate
 	private LocalDateTime lastModifiedAt;
 	
+	public BlogPostResponse(int blogPostId, String title, String subTitle, String summary, PostType postType,
+			String seoTitle, String seoDescription, String[] seoTopics) {
+		super();
+		this.blogPostId = blogPostId;
+		this.title = title;
+		this.subTitle = subTitle;
+		this.summary = summary;
+		this.postType = postType;
+		this.seoTitle = seoTitle;
+		this.seoDescription = seoDescription;
+		this.seoTopics = seoTopics;
+	}
+	
+	public PostType getPostType() {
+		return postType;
+	}
+	public void setPostType(PostType postType) {
+		this.postType = postType;
+	}
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -97,12 +86,6 @@ public class BlogPost {
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
-	public PostType getPostType() {
-		return postType;
-	}
-	public void setPostType(PostType postType) {
-		this.postType = postType;
-	}
 	public String getSeoTitle() {
 		return seoTitle;
 	}
@@ -120,11 +103,5 @@ public class BlogPost {
 	}
 	public void setSeoTopics(String[] seoTopics) {
 		this.seoTopics = seoTopics;
-	}
-	public Blog getBlog() {
-		return blog;
-	}
-	public void setBlog(Blog blog) {
-		this.blog = blog;
-	}
+	}	
 }
