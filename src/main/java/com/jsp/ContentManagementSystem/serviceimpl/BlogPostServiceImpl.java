@@ -42,14 +42,16 @@ public class BlogPostServiceImpl implements BlogPostService {
 	}
 	
 	private BlogPostResponse mapToBlogPostResponse(BlogPost blogPost) {
-		return new BlogPostResponse(blogPost.getBlogPostId(),
+		return new BlogPostResponse(
+				blogPost.getBlogPostId(),
 				blogPost.getTitle(),
 				blogPost.getSubTitle(),
 				blogPost.getSummary(),
 				blogPost.getPostType(),
-				blogPost.getSeoTitle(),
-				blogPost.getSeoDescription(),
-				blogPost.getSeoTopics()
+				blogPost.getCreatedBy(),
+				blogPost.getCreateAt(),
+				blogPost.getLastModifiedBy(),
+				blogPost.getLastModifiedAt()
 		);
 	}
 
@@ -57,9 +59,6 @@ public class BlogPostServiceImpl implements BlogPostService {
 		blogPost.setTitle(blogPostRequest.getTitle());
 		blogPost.setSubTitle(blogPostRequest.getSubTitle());
 		blogPost.setSummary(blogPostRequest.getSummary());
-		blogPost.setSeoTitle(blogPostRequest.getSeoTitle());
-		blogPost.setSeoDescription(blogPostRequest.getSeoDescription());
-		blogPost.setSeoTopics(blogPostRequest.getSeoTopics());
 		blogPost.setPostType(PostType.DRAFT);
 		return blogPost;
 	}
