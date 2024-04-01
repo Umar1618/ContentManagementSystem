@@ -76,5 +76,4 @@ public class ContributionPanelServiceImpl implements ContributionPanelService {
 			}).orElseThrow(()-> new ContributionPanelNotFoundByIdException("Failed to remove Contributor"));
 		}).get();
 	}
-
 }

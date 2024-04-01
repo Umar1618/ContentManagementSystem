@@ -6,18 +6,17 @@ public class BlogResponse {
 	private String title;
 	private String[] topics;
 	private String about;
-//	private List<User> users;
-
+	
+	public BlogResponse(int blogId, String title, String[] topics, String about) {
+		this.blogId = blogId;
+		this.title = title;
+		this.topics = topics;
+		this.about = about;
+	}
+	
 	public int getBlogId() {
 		return blogId;
 	}
-	public BlogResponse(int blogId, String title, String[] topics, String about) {
-	super();
-	this.blogId = blogId;
-	this.title = title;
-	this.topics = topics;
-	this.about = about;
-}
 	public void setBlogId(int blogId) {
 		this.blogId = blogId;
 	}
