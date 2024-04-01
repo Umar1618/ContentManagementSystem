@@ -14,9 +14,7 @@ public class BlogPostResponse {
 	private String createdBy;
 	private LocalDateTime createAt;
 	private String lastModifiedBy;
-	private LocalDateTime lastModifiedAt;
-	
-	
+	private LocalDateTime lastModifiedAt;	
 	
 	public BlogPostResponse(int blogPostId, String title, String subTitle, String summary, PostType postType,
 			String createdBy, LocalDateTime createAt, String lastModifiedBy, LocalDateTime lastModifiedAt) {
@@ -30,6 +28,7 @@ public class BlogPostResponse {
 		this.lastModifiedBy = lastModifiedBy;
 		this.lastModifiedAt = lastModifiedAt;
 	}
+	
 	public PostType getPostType() {
 		return postType;
 	}
