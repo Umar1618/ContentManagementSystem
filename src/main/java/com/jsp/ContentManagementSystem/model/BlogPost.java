@@ -18,7 +18,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -30,12 +29,9 @@ public class BlogPost {
 	@NotNull
 	private String title;
 	private String subTitle;
-	@Size(min = 500, max = 2000)
+	@Column(length = 2000)
 	private String summary;
 	private PostType postType;
-	private String seoTitle;
-	private String seoDescription;
-	private String[] seoTopics;
 	@ManyToOne
 	private Blog blog;
 	@CreatedBy
@@ -102,24 +98,6 @@ public class BlogPost {
 	}
 	public void setPostType(PostType postType) {
 		this.postType = postType;
-	}
-	public String getSeoTitle() {
-		return seoTitle;
-	}
-	public void setSeoTitle(String seoTitle) {
-		this.seoTitle = seoTitle;
-	}
-	public String getSeoDescription() {
-		return seoDescription;
-	}
-	public void setSeoDescription(String seoDescription) {
-		this.seoDescription = seoDescription;
-	}
-	public String[] getSeoTopics() {
-		return seoTopics;
-	}
-	public void setSeoTopics(String[] seoTopics) {
-		this.seoTopics = seoTopics;
 	}
 	public Blog getBlog() {
 		return blog;

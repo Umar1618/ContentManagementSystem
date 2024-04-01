@@ -11,27 +11,25 @@ public class BlogPostResponse {
 	private String subTitle;
 	private String summary;
 	private PostType postType;
-	private String seoTitle;
-	private String seoDescription;
-	private String[] seoTopics;
 	private String createdBy;
 	private LocalDateTime createAt;
 	private String lastModifiedBy;
 	private LocalDateTime lastModifiedAt;
 	
+	
+	
 	public BlogPostResponse(int blogPostId, String title, String subTitle, String summary, PostType postType,
-			String seoTitle, String seoDescription, String[] seoTopics) {
-		super();
+			String createdBy, LocalDateTime createAt, String lastModifiedBy, LocalDateTime lastModifiedAt) {
 		this.blogPostId = blogPostId;
 		this.title = title;
 		this.subTitle = subTitle;
 		this.summary = summary;
 		this.postType = postType;
-		this.seoTitle = seoTitle;
-		this.seoDescription = seoDescription;
-		this.seoTopics = seoTopics;
+		this.createdBy = createdBy;
+		this.createAt = createAt;
+		this.lastModifiedBy = lastModifiedBy;
+		this.lastModifiedAt = lastModifiedAt;
 	}
-	
 	public PostType getPostType() {
 		return postType;
 	}
@@ -85,23 +83,5 @@ public class BlogPostResponse {
 	}
 	public void setSummary(String summary) {
 		this.summary = summary;
-	}
-	public String getSeoTitle() {
-		return seoTitle;
-	}
-	public void setSeoTitle(String seoTitle) {
-		this.seoTitle = seoTitle;
-	}
-	public String getSeoDescription() {
-		return seoDescription;
-	}
-	public void setSeoDescription(String seoDescription) {
-		this.seoDescription = seoDescription;
-	}
-	public String[] getSeoTopics() {
-		return seoTopics;
-	}
-	public void setSeoTopics(String[] seoTopics) {
-		this.seoTopics = seoTopics;
 	}	
 }
