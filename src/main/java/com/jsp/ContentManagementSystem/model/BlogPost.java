@@ -17,7 +17,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -26,7 +25,6 @@ public class BlogPost {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int blogPostId;
-	@NotNull
 	private String title;
 	private String subTitle;
 	@Column(length = 2000)
