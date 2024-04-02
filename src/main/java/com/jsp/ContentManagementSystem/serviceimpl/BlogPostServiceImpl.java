@@ -59,6 +59,14 @@ public class BlogPostServiceImpl implements BlogPostService {
 		blogPost.setPostType(PostType.DRAFT);
 		return blogPost;
 	}
+	
+	private boolean validateUser(Blog blog) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		return userRepository.findByEmail(email).map(user -> 
+			(email.equals(blog.getUser().getEmail()) || contributionPanelRepository
+					.existsByPanelIdAndContributors(blog.getContributionPanel().getPanelId(),user))
+		).orElse(false);
+	}
 
 	@Override
 	public ResponseEntity<ResponseStructure<BlogPostResponse>> createBlogPostDraft(int blogId, BlogPostRequest blogPostRequest) {
@@ -75,14 +83,6 @@ public class BlogPostServiceImpl implements BlogPostService {
 					.setBody(mapToBlogPostResponse(blogPost)));
 		}).orElseThrow(()-> new BlogNotFoundByIdException("Faild to create blogpost"));
 	}
-
-	private boolean validateUser(Blog blog) {
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		return userRepository.findByEmail(email).map(user -> 
-			(email.equals(blog.getUser().getEmail()) || contributionPanelRepository
-					.existsByPanelIdAndContributors(blog.getContributionPanel().getPanelId(),user))
-		).orElse(false);
-	}
 	
 	@Override
 	public ResponseEntity<ResponseStructure<BlogPostResponse>> updateBlogPostDraft(int postId,
@@ -95,5 +95,18 @@ public class BlogPostServiceImpl implements BlogPostService {
 					.setMessage("BlogPost updated successfully")
 					.setBody(mapToBlogPostResponse(blogPost)));
 		}).orElseThrow(()-> new BlogPostNotFoundByIdException("Faild to update blogpost"));
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<BlogPostResponse>> deleteBlogPost(int postId) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		return blogPostRepository.findById(postId).map(blogPost -> {
+			if(!email.equals(blogPost.getCreatedBy()) && !email.equals(blogPost.getBlog().getUser().getEmail()))
+				throw new IllegalAccessRequestException("Faild to delete blogpost");
+			blogPostRepository.delete(blogPost);
+			return ResponseEntity.ok(structure.setStatus(HttpStatus.OK.value())
+					.setMessage("BlogPost deleted successfully")
+					.setBody(mapToBlogPostResponse(blogPost)));
+		}).orElseThrow(()-> new BlogPostNotFoundByIdException("Faild to delete blogpost"));
 	}
 }

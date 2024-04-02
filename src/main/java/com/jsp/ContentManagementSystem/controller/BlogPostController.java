@@ -1,6 +1,7 @@
 package com.jsp.ContentManagementSystem.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,5 +41,14 @@ public class BlogPostController {
 	@PutMapping("/blog-posts/{postId}")
 	public ResponseEntity<ResponseStructure<BlogPostResponse>> updateBlogPostDraft(@PathVariable int postId, @RequestBody BlogPostRequest blogPost){
 		return blogPostService.updateBlogPostDraft(postId, blogPost);
+	}
+	
+	@Operation(description = "This endpoint is used to remove blog post form database", responses = {
+			@ApiResponse(responseCode = "200", description = "Blog post removed successfully"),
+			@ApiResponse(responseCode = "404", description = "Invalid input")
+	})
+	@DeleteMapping("/blog-posts/{postId}")
+	public ResponseEntity<ResponseStructure<BlogPostResponse>> deleteBlogPost(@PathVariable int postId){
+		return blogPostService.deleteBlogPost(postId);
 	}
 }
